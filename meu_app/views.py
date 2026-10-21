@@ -1,14 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 @login_required
 def index(request):
     return render(request, 'index.html')
 
 
-def login(request):
-    return render(request, 'login.html')
+def sair(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')
+    else:
+        return redirect('index')
+
 
 def sair(request):
     return redirect('login')
