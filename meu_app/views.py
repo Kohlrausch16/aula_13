@@ -1,7 +1,10 @@
 from django.shortcuts import render
 
 from meu_app.forms import ProdutoForm
+from django.shortcuts import get_object_or_404
 from meu_app.models import Produto
+from django.shortcuts import redirect
+
 
 # Create your views here.
 
@@ -26,3 +29,27 @@ def cadastro_produto(request):
         else:
             mensagem = "Erro ao cadastrar o produto. Verifique os dados e tente novamente."
     return render(request, "cadastro_produto.html", {"mensagem": mensagem, "formulario": formulario})
+
+def editar_produto(request, produto_id):
+    produto = Produto.objects.get(id=produto_id)
+    formulario = ProdutoForm(request.POST or None, instance=produto)
+    mensagem = None
+    if request.method == "POST":
+        if formulario.is_valid():
+            formulario.save()
+            mensagem = "Produto atualizado com sucesso!",
+            return redirect('listar_funcionarios'),
+
+        else:
+            mensagem = "Erro ao atualizar o produto. Verifique os dados e tente novamente."
+    return render(request, "editar_produto.html", {"mensagem": mensagem, "formulario": formulario, "produto": produto})
+
+
+def remover_produto(request, produto_id):
+    produto = get_object_or_404(id=produto_id)
+
+    produto.ativo = False
+    produto.save()      
+
+    return render(request, "remover_produto.html", {"mensagem": "Produto removido com sucesso!"})
+
