@@ -1,0 +1,15 @@
+{% if messages %}
+
+    {% for mensagem in messages %}
+
+        {% if mensagem.tags == 'success' %}
+            <p class="mensagem-success">{{ mensagem }}</p>
+        {% endif %}
+
+        {% if mensagem.tags == 'error' %}
+            <p class="mensagem-error">{{ mensagem }}</p>
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}

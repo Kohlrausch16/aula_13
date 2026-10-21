@@ -1,0 +1,22 @@
+<nav>
+    <div>
+        <a href="{% url 'cadastro_produto' %}">Cadastro de Produto</a>
+        <a href="{% url 'index' %}">Cadastro de Usuário</a>
+        <a href="{% url 'index' %}">Cadastro de Produto</a>
+        <a href="{% url 'index' %}">Listar Produtos</a>
+    </div>
+    {% comment %}
+    <div class="usuario-menu">
+        {% if user.is_authenticated %}
+            <span>Olá, {{ user.username }}!</span>
+
+            <form method="post" action="#">
+                {% csrf_token %}
+                <button type="submit" class="link-logout">Sair</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+        {% endif %}
+    </div>  
+    {% endcomment %}
+</nav>
