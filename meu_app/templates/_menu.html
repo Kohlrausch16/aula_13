@@ -1,0 +1,19 @@
+<nav>
+    <div>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'cadastro_produto' %}">Cadastro de Produto</a>
+        <a href="{% url 'listar_produtos' %}">Produtos</a>
+    </div>
+    <div class="usuario-menu">
+        {% if user.is_authenticated %}
+            <span>Olá, {{ user.username }}!</span>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="link-logout">Sair</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+        {% endif %}
+    </div>  
+</nav>
