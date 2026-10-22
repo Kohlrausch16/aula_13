@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 
 from meu_app.forms import ProdutoForm
 from django.shortcuts import get_object_or_404
@@ -15,7 +16,6 @@ def index(request):
 
 def cadastro_produto(request):
     formulario = ProdutoForm(request.POST or None)
-    mensagem = None
     if request.method == "POST":
         if formulario.is_valid():
             Produto.objects.create(
@@ -24,17 +24,11 @@ def cadastro_produto(request):
                 preco=formulario.cleaned_data["preco"],
                 quantidade=formulario.cleaned_data["quantidade"],
             )
-            messages = {
-                mensagem: "Produto cadastrado com sucesso!",
-                mensagem.tags: "success"
-            }
-            return redirect('listar_produtos', messages=messages)
+            messages.success(request, "Produto cadastrado com sucesso!")
+            return redirect('listar_produtos')
         else:
-            messages = {
-                mensagem: "Erro ao cadastrar o produto. Verifique os dados e tente novamente.",
-                mensagem.tags: "error"
-            }
-        return render(request, "cadastro_produto.html", {"messages": messages, "formulario": formulario})
+            messages.error(request, "Erro ao cadastrar o produto. Verifique os dados e tente novamente.")
+        return render(request, "cadastro_produto.html", {"formulario": formulario})
     return render(request, "cadastro_produto.html", {"formulario": formulario})
 
 def editar_produto(request, produto_id):
