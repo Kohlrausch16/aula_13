@@ -46,7 +46,7 @@ def editar_produto(request, produto_id):
 
 
 def remover_produto(request, produto_id):
-    produto = get_object_or_404(id=produto_id)
+    produto = get_object_or_404(Produto, id=produto_id)
 
     produto.ativo = False
     produto.save()      

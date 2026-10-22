@@ -32,10 +32,12 @@
             <tbody>
                 {% for produto in dados.produtos %}
                 <tr>
-                    <td><a href="{% url 'editar_produto' produto.id %}" class="btn-cadastro">{{ produto.nome }}</a></td>
+                    <td>{{ produto.nome }}</td>
                     <td>{{ produto.descricao }}</td>
                     <td>R$ {{ produto.preco|floatformat:2 }}</td>
                     <td>{{ produto.quantidade }}</td>
+                    <td><a href="{% url 'editar_produto' produto.id %}" class="btn-cadastro">Editar</a></td>
+                    <td><a href="{% url 'remover_produto' produto.id %}" class="btn-cadastro" onclick="return confirm('Tem certeza que deseja remover este produto?');">Remover</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
