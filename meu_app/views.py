@@ -61,6 +61,12 @@ def remover_produto(request, produto_id):
 
     produto.ativo = False
     produto.save()
+    messages.success(request, "Produto removido com sucesso!")
+    
+    return redirect('listar_produtos')
+      
+def sair(request):
+    return redirect('login')
 
       
 def cadastrar_usuario(request):
