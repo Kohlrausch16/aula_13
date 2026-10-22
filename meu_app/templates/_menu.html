@@ -1,9 +1,8 @@
 <nav>
     <div>
+        <a href="{% url 'index' %}">Home</a>
         <a href="{% url 'cadastro_produto' %}">Cadastro de Produto</a>
-        <a href="{% url 'index' %}">Cadastro de Usuário</a>
-        <a href="{% url 'index' %}">Cadastro de Produto</a>
-        <a href="{% url 'listar_produtos' %}">Listar Produtos</a>
+        <a href="{% url 'listar_produtos' %}">Produtos</a>
     </div>
     {% comment %}
     <div class="usuario-menu">
