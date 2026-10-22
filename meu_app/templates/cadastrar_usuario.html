@@ -1,31 +1,19 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href=" {% static "css/style.css" %}">
-    <title>Cadastro de Usuário</title>
-</head>
-<body>
-
-    {% include "_menu.html" %}
-    {% include "_messages.html" %}
-
-    <h1>Cadastrar Usuário</h1>
-
-    <div class="container-principal">
-        <form method="post">
-
-            {% csrf_token %}
-
-            {{ formulario.as_p }}
-
-            <button type="submit">Cadastrar</button>
-
-        </form>
-    </div>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Criar conta{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <span class="eyebrow">Sua conta</span>
+    <h1>Criar conta</h1>
+    <p>Preencha os dados abaixo para começar.</p>
+</div>
+<section class="card form-card auth-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Cadastrar</button>
+            <a class="button button-secondary" href="{% url 'login' %}">Já tenho conta</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

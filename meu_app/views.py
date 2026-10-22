@@ -65,10 +65,6 @@ def remover_produto(request, produto_id):
     
     return redirect('listar_produtos')
       
-def sair(request):
-    return redirect('login')
-
-      
 def cadastrar_usuario(request):
 
     if request.method == 'POST':

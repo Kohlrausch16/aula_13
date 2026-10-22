@@ -1,32 +1,19 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href=" {% static "css/style.css" %}">
-    <title>Cadastro de Produto</title>
-</head>
-<body>
-
-    {% include '_menu.html'%}
-
-    <h1>Cadastrar Produto</h1>
-
-    {% include '_messages.html' %}
-
-    <div class="container-principal">
-        <form method="post">
-
-            {% csrf_token %}
-
-            {{ formulario.as_p }}
-
-            <button type="submit">Cadastrar</button>
-
-        </form>
-    </div>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Cadastrar produto{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <span class="eyebrow">Catálogo</span>
+    <h1>Cadastrar produto</h1>
+    <p>Adicione um novo item ao seu catálogo.</p>
+</div>
+<section class="card form-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Cadastrar produto</button>
+            <a class="button button-secondary" href="{% url 'listar_produtos' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

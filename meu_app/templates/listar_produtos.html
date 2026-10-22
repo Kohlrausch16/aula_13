@@ -1,49 +1,58 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src=" {% static "js/helpers.js" %}"></script>
-    <title>Listagem de Produtos</title>
-</head>
-<body>
-
-    {% include '_menu.html'%}
-
-    <h1>Lista De Produtos</h1>
-
-    <div class="container-principal">
-        <form method="GET" action="{% url 'listar_produtos' %}">
-            <input type="text" name="search" placeholder="Pesquisar produtos..." value="{{ request.GET.search }}">
-            <button type="submit">Pesquisar</button>
-        </form>
+{% extends 'base.html' %}
+{% block title %}Produtos{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <span class="eyebrow">Catálogo</span>
+    <h1>Produtos</h1>
+    <p>Consulte e gerencie os produtos cadastrados.</p>
+</div>
+<div class="toolbar">
+    <form class="search-form" method="get" action="{% url 'listar_produtos' %}" role="search">
+        <label for="busca" class="visually-hidden">Pesquisar produtos</label>
+        <input id="busca" type="text" name="search" placeholder="Pesquisar produtos..." value="{{ request.GET.search }}">
+        <button class="button button-secondary" type="submit">Pesquisar</button>
+    </form>
+    <a class="button button-primary" href="{% url 'cadastro_produto' %}">Novo produto</a>
+</div>
+<section class="card table-card" aria-label="Lista de produtos">
+    {% if dados.produtos %}
+    <div class="table-scroll">
         <table>
             <thead>
                 <tr>
-                    <th>Nome <a class="icon-crescente" href="?ordem=crescente">↑</a> <a class="icon-decrescente" href="?ordem=decrescente">↓</a></th>
-                    <th>Descrição</th>
-                    <th>Preço</th>
-                    <th>Quantidade</th>
+                    <th scope="col">Nome <span class="sort-links"><a href="?search={{ request.GET.search|urlencode }}&ordem=crescente" aria-label="Ordenar por nome crescente" {% if request.GET.ordem == 'crescente' %}aria-current="true"{% endif %}>↑</a><a href="?search={{ request.GET.search|urlencode }}&ordem=decrescente" aria-label="Ordenar por nome decrescente" {% if request.GET.ordem == 'decrescente' %}aria-current="true"{% endif %}>↓</a></span></th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col" class="actions-cell">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for produto in dados.produtos %}
                 <tr>
-                    <td>{{ produto.nome }}</td>
-                    <td>{{ produto.descricao }}</td>
-                    <td>R$ {{ produto.preco|floatformat:2 }}</td>
-                    <td>{{ produto.quantidade }}</td>
-                    <td><a href="{% url 'editar_produto' produto.id %}" class="btn-cadastro">Editar</a></td>
-                    <td><a href="{% url 'remover_produto' produto.id %}" class="btn-cadastro" onclick="return confirm('Tem certeza que deseja remover este produto?');">Remover</a></td>
+                    <td class="product-name">{{ produto.nome }}</td>
+                    <td class="description-cell">{{ produto.descricao|default:"—" }}</td>
+                    <td class="numeric-cell">R$ {{ produto.preco|floatformat:2 }}</td>
+                    <td class="numeric-cell">{{ produto.quantidade }}</td>
+                    <td class="actions-cell">
+                        <a class="button button-secondary button-small" href="{% url 'editar_produto' produto.id %}">Editar</a>
+                        <a class="button button-danger button-small" href="{% url 'remover_produto' produto.id %}" onclick="return confirm('Tem certeza que deseja remover este produto?');">Remover</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    
-    {% include '_messages.html' %}
-</body>
-</html>
+    {% else %}
+    <div class="empty-state">
+        <h2>Nenhum produto encontrado</h2>
+        <p>{% if request.GET.search %}Tente pesquisar por outro nome.{% else %}Comece cadastrando o primeiro produto.{% endif %}</p>
+        {% if request.GET.search %}
+        <a class="button button-secondary" href="{% url 'listar_produtos' %}">Limpar pesquisa</a>
+        {% else %}
+        <a class="button button-primary" href="{% url 'cadastro_produto' %}">Cadastrar produto</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

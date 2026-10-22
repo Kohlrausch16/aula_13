@@ -1,27 +1,27 @@
-<nav>
-    <div>
+<header class="site-header">
+    <nav class="nav-shell" aria-label="Navegação principal">
+        <a class="brand" href="{% url 'index' %}" aria-label="Gestão de Produtos, início">
+            <span class="brand-mark" aria-hidden="true">◈</span>
+            <span>Gestão de Produtos</span>
+        </a>
         {% if user.is_authenticated %}
-            <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'cadastro_produto' %}">Cadastro de Produto</a>
-            <a href="{% url 'listar_produtos' %}">Produtos</a>
-        {% endif %}
-
-        
-    </div>
-
-    <div class="usuario-menu">
-        {% if user.is_authenticated %}
-            <span>Olá, {{ user.username }}!</span>
-
+        <div class="nav-links">
+            <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}>Início</a>
+            <a href="{% url 'listar_produtos' %}" {% if request.resolver_match.url_name == 'listar_produtos' %}aria-current="page"{% endif %}>Produtos</a>
+            <a href="{% url 'cadastro_produto' %}" {% if request.resolver_match.url_name == 'cadastro_produto' %}aria-current="page"{% endif %}>Novo produto</a>
+        </div>
+        <div class="nav-account">
+            <span class="account-name">Olá, {{ user.username }}!</span>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="link-logout">Sair</button>
             </form>
+        </div>
         {% else %}
-            <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'cadastrar_usuario' %}">Cadastre-se</a>
-            <a href="{% url 'login' %}">Entrar</a>
+        <div class="nav-account">
+            <a href="{% url 'cadastrar_usuario' %}" {% if request.resolver_match.url_name == 'cadastrar_usuario' %}aria-current="page"{% endif %}>Criar conta</a>
+            <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}>Entrar</a>
+        </div>
         {% endif %}
-    </div>
-
-</nav>
+    </nav>
+</header>

@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3659d9">
+    <title>{% block title %}Início{% endblock %} | Gestão de Produtos</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include '_menu.html' %}
+    <main class="page-shell" id="conteudo">
+        {% include '_messages.html' %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+        <div class="footer-shell">Gestão de Produtos</div>
+    </footer>
+</body>
+</html>

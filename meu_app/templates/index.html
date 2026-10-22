@@ -1,20 +1,25 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href=" {% static "css/style.css" %}">
-    <title>Index</title>
-</head>
-<body>
-
-    {% include '_menu.html'%}
-    {% include "_messages.html" %}
-    
-    <h1> Django Rodando</h1>
-
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Início{% endblock %}
+{% block content %}
+<section class="card hero">
+    <div>
+        <span class="eyebrow">Bem-vindo</span>
+        <h1>Seus produtos, organizados em um só lugar.</h1>
+        <p>Cadastre, consulte e atualize os itens do seu catálogo com facilidade.</p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+            <a class="button button-primary" href="{% url 'listar_produtos' %}">Ver produtos</a>
+            <a class="button button-secondary" href="{% url 'cadastro_produto' %}">Cadastrar produto</a>
+            {% else %}
+            <a class="button button-primary" href="{% url 'login' %}">Entrar</a>
+            <a class="button button-secondary" href="{% url 'cadastrar_usuario' %}">Criar conta</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-panel">
+        <span class="panel-icon" aria-hidden="true">▦</span>
+        <h2>Controle simples</h2>
+        <p>Informações de nome, descrição, preço e quantidade sempre à mão.</p>
+    </div>
+</section>
+{% endblock %}
