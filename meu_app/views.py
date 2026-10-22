@@ -5,14 +5,18 @@ from meu_app.forms import ProdutoForm
 from django.shortcuts import get_object_or_404
 from meu_app.models import Produto
 from django.shortcuts import redirect
-
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 # Create your views here.
 
 
-def index(request):
 
-    return render(request, "index.html")
+@login_required
+def index(request):
+    return render(request, 'index.html')
 
 def cadastro_produto(request):
     formulario = ProdutoForm(request.POST or None)
@@ -44,12 +48,39 @@ def editar_produto(request, produto_id):
             messages.error(request, "Erro ao atualizar o produto. Verifique os dados e tente novamente.")
     return render(request, "editar_produto.html", {"mensagem": mensagem, "formulario": formulario, "produto": produto})
 
+def sair(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')
+    else:
+        return redirect('index')
 
 def remover_produto(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
 
     produto.ativo = False
-    produto.save()      
+    produto.save()
+      
+def sair(request):
+    return redirect('login')
+
+def cadastrar_usuario(request):
+    
+    formulario_de_usuario = UserCreationForm()
+
+    if request.method == 'POST':
+        formulario = UserCreationForm(request.POST)
+
+        if formulario.is_valid():
+            formulario.save()
+
+            #nome_usuario = formulario.cleaned_data['username']
+            #mensagem = f'Usuário {nome_usuario} cadastrado com sucesso!'
+            #messages.success(request, mensagem)
+
+            return redirect('cadastrar_usuario')
+    else: 
+        formulario = UserCreationForm()
 
     messages.success(request, "Produto removido com sucesso!")
     return redirect('listar_produtos')
