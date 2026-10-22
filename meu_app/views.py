@@ -38,11 +38,10 @@ def editar_produto(request, produto_id):
     if request.method == "POST":
         if formulario.is_valid():
             formulario.save()
-            mensagem = "Produto atualizado com sucesso!",
-            return redirect('listar_funcionarios'),
-
+            messages.success(request, "Produto atualizado com sucesso!")
+            return redirect('listar_produtos')
         else:
-            mensagem = "Erro ao atualizar o produto. Verifique os dados e tente novamente."
+            messages.error(request, "Erro ao atualizar o produto. Verifique os dados e tente novamente.")
     return render(request, "editar_produto.html", {"mensagem": mensagem, "formulario": formulario, "produto": produto})
 
 
@@ -52,7 +51,8 @@ def remover_produto(request, produto_id):
     produto.ativo = False
     produto.save()      
 
-    return render(request, "remover_produto.html", {"mensagem": "Produto removido com sucesso!"})
+    messages.success(request, "Produto removido com sucesso!")
+    return redirect('listar_produtos')
 
 def listar_produtos(request):
     produtos = Produto.objects.all()
