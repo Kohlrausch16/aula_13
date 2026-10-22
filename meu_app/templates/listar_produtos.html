@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src=" {% static "js/helpers.js" %}"></script>
+    <title>Listagem de Produtos</title>
+</head>
+<body>
+
+    {% include '_menu.html'%}
+
+    <h1>Lista De Produtos</h1>
+
+    <div class="container-principal">
+        <form method="GET" action="{% url 'listar_produtos' %}">
+            <input type="text" name="search" placeholder="Pesquisar produtos..." value="{{ request.GET.search }}">
+            <button type="submit">Pesquisar</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome <a class="icon-crescente" href="?ordem=crescente">↑</a> <a class="icon-decrescente" href="?ordem=decrescente">↓</a></th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in dados.produtos %}
+                <tr>
+                    <td><a href="{% url 'editar_produto' produto.id %}" class="btn-cadastro">{{ produto.nome }}</a></td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>R$ {{ produto.preco|floatformat:2 }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
