@@ -24,11 +24,18 @@ def cadastro_produto(request):
                 preco=formulario.cleaned_data["preco"],
                 quantidade=formulario.cleaned_data["quantidade"],
             )
-            mensagem = "Produto cadastrado com sucesso!"
-            formulario = ProdutoForm()
+            messages = {
+                mensagem: "Produto cadastrado com sucesso!",
+                mensagem.tags: "success"
+            }
+            return redirect('listar_produtos', messages=messages)
         else:
-            mensagem = "Erro ao cadastrar o produto. Verifique os dados e tente novamente."
-    return render(request, "cadastro_produto.html", {"mensagem": mensagem, "formulario": formulario})
+            messages = {
+                mensagem: "Erro ao cadastrar o produto. Verifique os dados e tente novamente.",
+                mensagem.tags: "error"
+            }
+        return render(request, "cadastro_produto.html", {"messages": messages, "formulario": formulario})
+    return render(request, "cadastro_produto.html", {"formulario": formulario})
 
 def editar_produto(request, produto_id):
     produto = Produto.objects.get(id=produto_id)
