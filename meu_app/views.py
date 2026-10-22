@@ -12,12 +12,10 @@ from django.contrib.auth import logout
 
 # Create your views here.
 
-
-
-@login_required
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def cadastro_produto(request):
     formulario = ProdutoForm(request.POST or None)
     if request.method == "POST":
@@ -35,6 +33,7 @@ def cadastro_produto(request):
         return render(request, "cadastro_produto.html", {"formulario": formulario})
     return render(request, "cadastro_produto.html", {"formulario": formulario})
 
+@login_required
 def editar_produto(request, produto_id):
     produto = Produto.objects.get(id=produto_id)
     formulario = ProdutoForm(request.POST or None, instance=produto)
@@ -48,6 +47,7 @@ def editar_produto(request, produto_id):
             messages.error(request, "Erro ao atualizar o produto. Verifique os dados e tente novamente.")
     return render(request, "editar_produto.html", {"mensagem": mensagem, "formulario": formulario, "produto": produto})
 
+@login_required
 def sair(request):
     if request.method == 'POST':
         logout(request)
@@ -55,18 +55,15 @@ def sair(request):
     else:
         return redirect('index')
 
+@login_required
 def remover_produto(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
 
     produto.ativo = False
     produto.save()
-      
-def sair(request):
-    return redirect('login')
 
+      
 def cadastrar_usuario(request):
-    
-    formulario_de_usuario = UserCreationForm()
 
     if request.method == 'POST':
         formulario = UserCreationForm(request.POST)
@@ -74,17 +71,22 @@ def cadastrar_usuario(request):
         if formulario.is_valid():
             formulario.save()
 
-            #nome_usuario = formulario.cleaned_data['username']
-            #mensagem = f'Usuário {nome_usuario} cadastrado com sucesso!'
-            #messages.success(request, mensagem)
+            nome_usuario = formulario.cleaned_data['username']
+            mensagem = f'Usuário {nome_usuario} cadastrado com sucesso!'
+            messages.success(request, mensagem)
 
             return redirect('cadastrar_usuario')
     else: 
         formulario = UserCreationForm()
 
-    messages.success(request, "Produto removido com sucesso!")
-    return redirect('listar_produtos')
+    dados = {
+        'formulario': formulario
+    }
 
+    return render(request, 'cadastrar_usuario.html', dados)
+
+
+@login_required
 def listar_produtos(request):
     produtos = Produto.objects.all()
     produtos = produtos.filter(ativo=True)
